@@ -1,0 +1,71 @@
+{
+  "project": "LoTUS-FD Frontend",
+  "student": "Cheryl Lyeung",
+  "course": "NTU Info",
+  "submission_date": "2025-11-03",
+  "ai_tool": "Claude Code (Sonnet 4.5)",
+  "interactions": [
+    {
+      "id": 1,
+      "timestamp": "2025-11-03",
+      "question": "如何設定 Vite 專案的 base path 以便部署到 GitHub Pages？",
+      "ai_response": "需要在 vite.config.js 中設定 base 屬性為你的 repository 名稱。例如：export default defineConfig({ base: '/your-repo-name/' })",
+      "implementation": "修改 vite.config.js，加入正確的 base path 設定",
+      "result": "成功部署到 GitHub Pages",
+      "files_modified": ["vite.config.js"]
+    },
+    {
+      "id": 2,
+      "timestamp": "2025-11-03",
+      "question": "如何建立 production build？",
+      "ai_response": "使用 'npm run build' 指令來建立 production build，這會在 dist 目錄生成優化過的靜態檔案",
+      "implementation": "執行 npm run build 指令",
+      "result": "成功建立 production build",
+      "files_created": ["dist/"]
+    },
+    {
+      "id": 3,
+      "timestamp": "2025-11-03",
+      "question": "應該如何處理 node_modules 和 dist 目錄？",
+      "ai_response": "這些目錄不應該被加入版本控制。建立 .gitignore 檔案，加入 node_modules/ 和 dist/ 來忽略它們",
+      "implementation": "建立 .gitignore 檔案並加入需要忽略的目錄",
+      "result": "成功清理 repository",
+      "files_created": [".gitignore"]
+    },
+    {
+      "id": 4,
+      "timestamp": "2025-11-03",
+      "question": "如何部署到 GitHub Pages？",
+      "ai_response": "可以使用 GitHub Actions 自動部署，或手動將 dist 目錄推送到 gh-pages branch",
+      "implementation": "設定 GitHub Pages 使用 main branch 的根目錄或 dist 目錄",
+      "result": "網站成功部署上線",
+      "deployment_url": "https://ntu-info.github.io/lotus-bf-frontend-cheryllyeung/"
+    },
+    {
+      "id": 5,
+      "timestamp": "2025-11-03",
+      "question": "老師說要繳跟 AI interaction 的紀錄，請幫我生成 json 檔",
+      "ai_response": "理解需求後，生成包含所有互動問答記錄的 JSON 檔案，記錄開發過程中向 AI 詢問的問題、得到的回答、如何實作以及結果",
+      "implementation": "建立 ai-interaction-log.json 檔案記錄所有互動",
+      "result": "完成互動記錄文件",
+      "files_created": ["ai-interaction-log.json"]
+    }
+  ],
+  "summary": {
+    "total_questions": 5,
+    "main_topics": [
+      "Vite 專案設定",
+      "GitHub Pages 部署",
+      "版本控制最佳實踐",
+      "Build 流程",
+      "文件記錄"
+    ],
+    "key_learnings": [
+      "學會如何設定 Vite 的 base path 以配合 GitHub Pages",
+      "了解如何使用 .gitignore 管理不需要版本控制的檔案",
+      "掌握前端專案的建置和部署流程",
+      "學習如何記錄開發過程中與 AI 的互動"
+    ],
+    "ai_assistance_value": "AI 協助快速解決設定問題、提供最佳實踐建議，大幅縮短開發和部署時間"
+  }
+}
