@@ -5,14 +5,20 @@ import { QueryBuilder } from './components/QueryBuilder'
 import { Studies } from './components/Studies'
 import { NiiViewer } from './components/NiiViewer'
 import { useUrlQueryState } from './hooks/useUrlQueryState'
+import insideOutImage from './assets/inside out.jpg'
 import './App.css'
 
 export default function App () {
   const [query, setQuery] = useUrlQueryState('q')
+  const [hasEntered, setHasEntered] = useState(false)
 
   const handlePickTerm = useCallback((t) => {
     setQuery((q) => (q ? `${q} ${t}` : t))
   }, [setQuery])
+
+  const handleEnter = () => {
+    setHasEntered(true)
+  }
 
   // --- resizable panes state ---
   const gridRef = useRef(null)
@@ -56,121 +62,68 @@ export default function App () {
     window.addEventListener('mouseup', onMouseUp)
   }
 
+  // Welcome page - before entering
+  if (!hasEntered) {
+    return (
+      <div className="app welcome-page">
+        <div className="welcome__container">
+          <header className="welcome__header">
+            <h1 className="welcome__title">LoTUS-BF</h1>
+            <div className="welcome__subtitle">Location-or-Term Unified Search for Brain Functions</div>
+          </header>
+
+          <section className="welcome__portal" onClick={handleEnter}>
+            <div className="welcome__image-container">
+              <img src={insideOutImage} alt="Inside Out - Explore Brain Functions" className="welcome__image" />
+              <div className="welcome__overlay">
+                <div className="welcome__loading">
+                  <div className="welcome__loading-text">Entering Brain Headquarters...</div>
+                  <div className="welcome__loading-bar">
+                    <div className="welcome__loading-progress"></div>
+                  </div>
+                  <div className="welcome__loading-hint">Click to Start</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    )
+  }
+
+  // Main application - after entering
   return (
     <div className="app">
-      {/* Inline style injection to enforce no-hover look */}
-      <style>{`
-        :root {
-          --primary-600: #2563eb;
-          --primary-700: #1d4ed8;
-          --primary-800: #1e40af;
-          --border: #e5e7eb;
-        }
-        .app { padding-right: 0 !important; }
-        .app__grid { width: 100vw; max-width: 100vw; }
-        .card input[type="text"],
-        .card input[type="search"],
-        .card input[type="number"],
-        .card select,
-        .card textarea {
-          width: 100% !important;
-          max-width: 100% !important;
-          display: block;
-        }
-        /* Downsized buttons */
-        .card button,
-        .card [role="button"],
-        .card .btn,
-        .card .button {
-          font-size: 12px !important;
-          padding: 4px 8px !important;
-          border-radius: 8px !important;
-          line-height: 1.2 !important;
-          background: var(--primary-600) !important;
-          color: #fff !important;
-          border: none !important;
-        }
-        /* No visual change on hover/active */
-        .card button:hover,
-        .card button:active,
-        .card [role="button"]:hover,
-        .card [role="button"]:active,
-        .card .btn:hover,
-        .card .btn:active,
-        .card .button:hover,
-        .card .button:active {
-          background: var(--primary-600) !important;
-          color: #fff !important;
-        }
-        /* Toolbars / chips also no-hover */
-        .card .toolbar button,
-        .card .toolbar [role="button"],
-        .card .toolbar .btn,
-        .card .toolbar .button,
-        .card .qb-toolbar button,
-        .card .qb-toolbar [role="button"],
-        .card .qb-toolbar .btn,
-        .card .qb-toolbar .button,
-        .card .query-builder button,
-        .card .query-builder [role="button"],
-        .card .query-builder .btn,
-        .card .query-builder .button,
-        .card .chip,
-        .card .pill,
-        .card .tag {
-          background: var(--primary-600) !important;
-          color: #fff !important;
-          border: none !important;
-        }
-        .card .toolbar button:hover,
-        .card .qb-toolbar button:hover,
-        .card .query-builder button:hover,
-        .card .chip:hover,
-        .card .pill:hover,
-        .card .tag:hover,
-        .card .toolbar button:active,
-        .card .qb-toolbar button:active,
-        .card .query-builder button:active {
-          background: var(--primary-600) !important;
-          color: #fff !important;
-        }
-        /* Disabled stays same color but dimmer for affordance */
-        .card .toolbar button:disabled,
-        .card .qb-toolbar button:disabled,
-        .card .query-builder button:disabled,
-        .card button[disabled],
-        .card [aria-disabled="true"] {
-          background: var(--primary-600) !important;
-          color: #fff !important;
-          opacity: .55 !important;
-        }
-      `}</style>
-
       <header className="app__header">
         <h1 className="app__title">LoTUS-BF</h1>
         <div className="app__subtitle">Location-or-Term Unified Search for Brain Functions</div>
       </header>
 
-      <main className="app__grid" ref={gridRef}>
-        <section className="card" style={{ flexBasis: `${sizes[0]}%` }}>
-          <div className="card__title">Terms</div>
-          <Terms onPickTerm={handlePickTerm} />
-        </section>
-
-        <div className="resizer" aria-label="Resize left/middle" onMouseDown={(e) => startDrag(0, e)} />
-
-        <section className="card card--stack" style={{ flexBasis: `${sizes[1]}%` }}>
+      <main className="control-panels">
+        <section className="card card--full">
           <QueryBuilder query={query} setQuery={setQuery} />
-          {/* <div className="hint">Current Query：<code className="hint__code">{query || '(empty)'}</code></div> */}
-          <div className="divider" />
-          <Studies query={query} />
         </section>
 
-        <div className="resizer" aria-label="Resize middle/right" onMouseDown={(e) => startDrag(1, e)} />
+        <div className="app__grid" ref={gridRef}>
+          <section className="card" style={{ flexBasis: `${sizes[0]}%` }}>
+            <div className="card__title">Terms</div>
+            <Terms onPickTerm={handlePickTerm} />
+          </section>
 
-        <section className="card" style={{ flexBasis: `${sizes[2]}%` }}>
-          <NiiViewer query={query} />
-        </section>
+          <div className="resizer" aria-label="Resize left/middle" onMouseDown={(e) => startDrag(0, e)} />
+
+          <section className="card" style={{ flexBasis: `${sizes[1]}%` }}>
+            <div className="card__title">Studies</div>
+            <Studies query={query} />
+          </section>
+
+          <div className="resizer" aria-label="Resize middle/right" onMouseDown={(e) => startDrag(1, e)} />
+
+          <section className="card" style={{ flexBasis: `${sizes[2]}%` }}>
+            <div className="card__title">NifTi Viewer</div>
+            <NiiViewer query={query} />
+          </section>
+        </div>
       </main>
     </div>
   )

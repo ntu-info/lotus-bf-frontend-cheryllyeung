@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
-  base: '/lotus-bf-frontend-cheryllyeung/',
+  base: '/neurosynth-frontend-cheryllyeung/lotus-bf/',
 
   plugins: [react()],
   resolve: {
