@@ -2,7 +2,7 @@
 node_modules/
 
 # Build output
-dist/
+# dist/  # Commented out - we need to commit dist for GitHub Pages
 
 # Environment variables
 .env
