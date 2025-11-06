@@ -17,9 +17,9 @@ function ErrorBoundary({ children }) {
   }, [])
   if (err) {
     return (
-      <div style="padding:16px; font-family: ui-sans-serif">
+      <div style={{padding: '16px', fontFamily: 'ui-sans-serif'}}>
         <h2>Runtime error!</h2>
-        <pre style="white-space:pre-wrap; background:#f5f5f5; padding:12px; border-radius:8px;">
+        <pre style={{whiteSpace: 'pre-wrap', background: '#f5f5f5', padding: '12px', borderRadius: '8px'}}>
 {String(err?.stack || err?.message || err)}
         </pre>
       </div>
