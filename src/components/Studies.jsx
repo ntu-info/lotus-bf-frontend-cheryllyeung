@@ -1,8 +1,6 @@
 import { API_BASE } from '../api'
 import { useEffect, useMemo, useState } from 'react'
 
-function classNames (...xs) { return xs.filter(Boolean).join(' ') }
-
 export function Studies ({ query }) {
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(false)
@@ -62,33 +60,28 @@ export function Studies ({ query }) {
   const pageRows = sorted.slice((page - 1) * pageSize, page * pageSize)
 
   return (
-    <div className='flex flex-col rounded-2xl border'>
-      <div className='flex items-center justify-between p-3'>
-        <div className='card__title'>Studies</div>
-        <div className='text-sm text-gray-500'>
-           {/* {query ? `Query: ${query}` : 'Query: (empty)'} */}
-        </div>
-      </div>
+    <div className='studies'>
+      {/* Removed internal border and title to match Terms component structure */}
 
 
       {query && loading && (
-        <div className='grid gap-3 p-3'>
+        <div className='studies__skeleton'>
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className='h-10 animate-pulse rounded-lg bg-gray-100' />
+            <div key={i} className='studies__skeleton-row' />
           ))}
         </div>
       )}
 
       {query && err && (
-        <div className='mx-3 mb-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700'>
+        <div className='alert alert--error'>
           {err}
         </div>
       )}
 
       {query && !loading && !err && (
-        <div className='overflow-auto'>
-          <table className='min-w-full text-sm'>
-            <thead className='sticky top-0 bg-gray-50 text-left'>
+        <div className='studies__table-wrapper'>
+          <table className='studies__table'>
+            <thead>
               <tr>
                 {[
                   { key: 'year', label: 'Year' },
@@ -96,10 +89,10 @@ export function Studies ({ query }) {
                   { key: 'title', label: 'Title' },
                   { key: 'authors', label: 'Authors' }
                 ].map(({ key, label }) => (
-                  <th key={key} className='cursor-pointer px-3 py-2 font-semibold' onClick={() => changeSort(key)}>
-                    <span className='inline-flex items-center gap-2'>
+                  <th key={key} onClick={() => changeSort(key)}>
+                    <span className='studies__th-content'>
                       {label}
-                      <span className='text-xs text-gray-500'>{sortKey === key ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
+                      <span className='studies__sort-icon'>{sortKey === key ? (sortDir === 'asc' ? '▲' : '▼') : ''}</span>
                     </span>
                   </th>
                 ))}
@@ -107,14 +100,14 @@ export function Studies ({ query }) {
             </thead>
             <tbody>
               {pageRows.length === 0 ? (
-                <tr><td colSpan={4} className='px-3 py-4 text-gray-500'>No data</td></tr>
+                <tr><td colSpan={4} className='studies__empty'>No data</td></tr>
               ) : (
                 pageRows.map((r, i) => (
-                  <tr key={i} className={classNames(i % 2 ? 'bg-white' : 'bg-gray-50')}>
-                    <td className='whitespace-nowrap px-3 py-2 align-top'>{r.year ?? ''}</td>
-                    <td className='px-3 py-2 align-top'>{r.journal || ''}</td>
-                    <td className='max-w-[540px] px-3 py-2 align-top'><div className='truncate' title={r.title}>{r.title || ''}</div></td>
-                    <td className='px-3 py-2 align-top'>{r.authors || ''}</td>
+                  <tr key={i}>
+                    <td className='studies__cell studies__cell--year'>{r.year ?? ''}</td>
+                    <td className='studies__cell'>{r.journal || ''}</td>
+                    <td className='studies__cell studies__cell--title'><div className='studies__title-text' title={r.title}>{r.title || ''}</div></td>
+                    <td className='studies__cell'>{r.authors || ''}</td>
                   </tr>
                 ))
               )}
@@ -124,13 +117,13 @@ export function Studies ({ query }) {
       )}
 
       {query && !loading && !err && (
-        <div className='flex items-center justify-between border-t p-3 text-sm'>
+        <div className='studies__pagination'>
           <div>Total <b>{sorted.length}</b> records, page <b>{page}</b>/<b>{totalPages}</b></div>
           <div className='flex items-center gap-2'>
-            <button disabled={page <= 1} onClick={() => setPage(1)} className='rounded-lg border px-2 py-1 disabled:opacity-40'>⏮</button>
-            <button disabled={page <= 1} onClick={() => setPage(p => Math.max(1, p - 1))} className='rounded-lg border px-2 py-1 disabled:opacity-40'>Previous</button>
-            <button disabled={page >= totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))} className='rounded-lg border px-2 py-1 disabled:opacity-40'>Next</button>
-            <button disabled={page >= totalPages} onClick={() => setPage(totalPages)} className='rounded-lg border px-2 py-1 disabled:opacity-40'>⏭</button>
+            <button disabled={page <= 1} onClick={() => setPage(1)} className='pagination-btn'>⏮</button>
+            <button disabled={page <= 1} onClick={() => setPage(p => Math.max(1, p - 1))} className='pagination-btn'>Previous</button>
+            <button disabled={page >= totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))} className='pagination-btn'>Next</button>
+            <button disabled={page >= totalPages} onClick={() => setPage(totalPages)} className='pagination-btn'>⏭</button>
           </div>
         </div>
       )}
