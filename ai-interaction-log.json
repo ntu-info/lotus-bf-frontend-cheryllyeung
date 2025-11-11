@@ -1,8 +1,8 @@
 {
-  "project": "LoTUS-FD Frontend",
+  "project": "LoTUS-BF Frontend",
   "student": "Cheryl Lyeung",
-  "course": "NTU Info",
-  "submission_date": "2025-11-03",
+  "course": "NTU Info - 114-1 Psychoinformatics",
+  "submission_date": "2025-11-06",
   "ai_tool": "Claude Code (Sonnet 4.5)",
   "interactions": [
     {
@@ -49,23 +49,65 @@
       "implementation": "建立 ai-interaction-log.json 檔案記錄所有互動",
       "result": "完成互動記錄文件",
       "files_created": ["ai-interaction-log.json"]
+    },
+    {
+      "id": 6,
+      "timestamp": "2025-11-06",
+      "question": "按Terms之後studies打不開",
+      "ai_response": "問題出在 Studies 組件有雙重結構：1) Studies.jsx 內部有自己的 border 容器和標題，2) App.jsx 外層也有 card 容器和標題。這導致結構重疊，造成顯示問題。",
+      "implementation": "移除 Studies 組件內部的邊框和標題，改為只保留外層 card 的結構，並統一使用 BEM 命名的 CSS classes",
+      "result": "Studies 組件現在可以正常開啟和顯示",
+      "files_modified": ["src/components/Studies.jsx", "src/App.css"]
+    },
+    {
+      "id": 7,
+      "timestamp": "2025-11-06",
+      "question": "Query Builder可以不要動來動去嗎",
+      "ai_response": "頁面有多個動畫效果：1) pageFlipIn 進場動畫讓卡片翻轉進入，2) card:hover 會讓卡片上移和旋轉。這些動畫造成「動來動去」的感覺。",
+      "implementation": "移除所有 pageFlipIn 動畫和 card hover 的 transform 效果，保留視覺效果如陰影和顏色變化",
+      "result": "頁面完全靜態，不再有移動動畫",
+      "files_modified": ["src/App.css"]
+    },
+    {
+      "id": 8,
+      "timestamp": "2025-11-06",
+      "question": "要deploy喔",
+      "ai_response": "執行 npm run build 建置專案，然後 git add, commit, push 到 GitHub。GitHub Pages 會自動部署更新。",
+      "implementation": "建置專案並推送到 main branch",
+      "result": "成功部署最新版本到 GitHub Pages",
+      "files_modified": ["dist/", "src/components/Studies.jsx", "src/App.css", "index.html"]
+    },
+    {
+      "id": 9,
+      "timestamp": "2025-11-06",
+      "question": "幫我確認作業要求是什麼 然後檢查是否完成",
+      "ai_response": "根據專案結構和 GitHub Classroom assignment，這是一個 LoTUS-BF (Location-or-Term Unified Search for Brain Functions) 前端專案。需要完成的功能包括：查詢建構、術語搜尋、研究列表、腦圖像查看器等功能，並部署到 GitHub Pages。",
+      "implementation": "檢查所有組件功能、驗證部署狀態、更新 AI interaction log",
+      "result": "完成功能檢查和記錄更新",
+      "files_modified": ["ai-interaction-log.json"]
     }
   ],
   "summary": {
-    "total_questions": 5,
+    "total_questions": 9,
     "main_topics": [
       "Vite 專案設定",
       "GitHub Pages 部署",
       "版本控制最佳實踐",
       "Build 流程",
-      "文件記錄"
+      "文件記錄",
+      "UI/UX bug 修復",
+      "組件結構優化",
+      "CSS 動畫控制"
     ],
     "key_learnings": [
       "學會如何設定 Vite 的 base path 以配合 GitHub Pages",
       "了解如何使用 .gitignore 管理不需要版本控制的檔案",
       "掌握前端專案的建置和部署流程",
-      "學習如何記錄開發過程中與 AI 的互動"
+      "學習如何記錄開發過程中與 AI 的互動",
+      "學會診斷和修復 React 組件結構問題",
+      "了解如何使用 BEM 命名規範組織 CSS",
+      "掌握如何控制 CSS 動畫以改善使用者體驗"
     ],
-    "ai_assistance_value": "AI 協助快速解決設定問題、提供最佳實踐建議，大幅縮短開發和部署時間"
+    "ai_assistance_value": "AI 協助快速解決設定問題、提供最佳實踐建議、診斷 bug、優化代碼結構，大幅縮短開發和除錯時間"
   }
 }
